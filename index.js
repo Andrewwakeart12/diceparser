@@ -1,7 +1,12 @@
 const TelegramBot = require('node-telegram-bot-api');
 const token = '5283041337:AAHrdImV57t298ZoZuEZii1jWGcqMIFPzKM';
 const { Telegraf } = require('telegraf');
-const bot = new Telegraf(token);
+
+const API_TOKEN = process.env.API_TOKEN || token;
+const PORT = process.env.PORT || 3000;
+const URL = process.env.URL || 'https://diceappparser.herokuapp.com/';
+const bot = new Telegraf(API_TOKEN);
+
 
 const selector = "%";
 function roll_dice(dice_arr){
@@ -106,5 +111,6 @@ bot.hears(/^\%/, (ctx,extra) => {
         }, 1000)})
         .catch(err => console.log(err));
  });
-
+bot.telegram.setWebhook(`${URL}/bot${API_TOKEN}`);
+bot.startWebhook(`/bot${API_TOKEN}`, null, PORT)
 bot.launch();
