@@ -10,7 +10,10 @@ const bot = new Telegraf(API_TOKEN);
 
 const selector = "%";
 function roll_dice(dice_arr){
-	var final_result_array= [];
+	var final_result_array= {
+		dice_ordered_by_type : [],
+		dice_for_final_sum : [],
+	};
 	var limit_exceded = false;
 	var bad_dice_format = false;
 	if(Array.isArray(dice_arr)){
@@ -24,28 +27,47 @@ function roll_dice(dice_arr){
 					if(dice_inner_arr.dice.length <= 2)
 					{						
 						var i = 0;
-						if(parseInt(dice_inner_arr.dice[0]) <= 100)
-						{
+						dice_inner_arr.dice[0] = Math.abs(parseInt(dice_inner_arr.dice[0]));
+						dice_inner_arr.dice[1] = Math.abs(parseInt(dice_inner_arr.dice[1]));
 
 						do{
-							var dice_max = parseInt(dice_inner_arr.dice[1]);
+						if(dice_inner_arr.dice[0] <= 100 && dice_inner_arr.dice[1] <= 100)
+						{
+							var dice_max = dice_inner_arr.dice[1] + 1;
 							var random_num = Math.floor((Math.random() * (dice_max-1)) +1)
-							final_result_array.push(random_num);
+							var obj_to_dice ={};
+							obj_to_dice[`d${dice_max-1}`] = random_num;
+							final_result_array.dice_ordered_by_type.push( obj_to_dice);
+							final_result_array.dice_for_final_sum.push(random_num);
 							i++;
-						}while(i < dice_inner_arr.dice[0])
 						}else
 						{
 							limit_exceded=true;
+							break;
 						}
+						}while(i < dice_inner_arr.dice[0])
 					}else{
 						bad_dice_format = true;
 					}
 				}else{
 					if(dice_inner_arr.dice.length <= 2)
-					{	
-					var dice_max = parseInt(dice_inner_arr.dice[1]);
-					var random_num = Math.floor((Math.random() * (dice_max-1)) +1)
-					final_result_array.push(random_num);
+					{	dice_inner_arr.dice[0] = 1;
+						dice_inner_arr.dice[0] = Math.abs(parseInt(dice_inner_arr.dice[0]));
+						dice_inner_arr.dice[1] = Math.abs(parseInt(dice_inner_arr.dice[1]));
+						if(dice_inner_arr.dice[0] <= 100 && dice_inner_arr.dice[1] <= 100)
+						{
+						var dice_max = dice_inner_arr.dice[1] + 1;
+						console.log("dice_inner_arr.dice[0]");
+						console.log(dice_inner_arr.dice[0]);
+						var random_num = Math.floor((Math.random() * (dice_max-1)) +1)
+						var obj_to_dice ={};
+						obj_to_dice[`d${dice_max-1}`] = random_num;
+						final_result_array.dice_ordered_by_type.push( obj_to_dice);
+						final_result_array.dice_for_final_sum.push(random_num);
+
+						}else{
+							limit_exceded=true;
+						}
 					}else{
 						bad_dice_format = true;
 					}
@@ -89,17 +111,42 @@ function process_message_to_dice_arr(msg){
 	console.log(dices)
 	return dices;
 }
+function give_answer_string(roll_dice_result){
+	var total_str = "Resultado final:";
+	var total_num = 0;
+	var sub_str = "";
+	if(roll_dice_result.hasOwnProperty('error')){
+		return roll_dice_result.msg;
+	}else if(roll_dice_result.hasOwnProperty('dice_ordered_by_type') && roll_dice_result.hasOwnProperty('dice_for_final_sum')){
+		if(Array.isArray(roll_dice_result.dice_ordered_by_type) && Array.isArray(roll_dice_result.dice_for_final_sum)){
+			roll_dice_result.dice_for_final_sum.forEach(e =>{
+				total_num += e;
+			})
+			total_str += total_num;
 
+			let dice_ordered_by_type = roll_dice_result.dice_ordered_by_type.sort();
+			console.log(Object.keys(dice_ordered_by_type));
+			dice_ordered_by_type.forEach(dice_obj => {
+				Object.keys(dice_obj).forEach(key => {
+					sub_str += ` ${key} : (${dice_obj[key]})`;
+				})
+			})
+		}
+	}
+	return `${total_str}\nTotal por dados: ${sub_str}
+	`;
+}
 bot.hears(/^\%/, (ctx,extra) => {
 	 console.log(ctx);
 	 let chatId = ctx.chat.id;
 
 	 dice_arr = process_message_to_dice_arr(ctx.message.text);
 	 dice_arr = roll_dice(dice_arr)
+	 dice_arr = give_answer_string(dice_arr)
 	 //send gif:
-	 //bot.sendDocument(msg.chat.id, 'https://educacion30.b-cdn.net/wp-content/uploads/2019/06/homer.gif');
+	 //ctx.replyWithDocument('https://educacion30.b-cdn.net/wp-content/uploads/2019/06/homer.gif');
      ctx.reply(
-     	`Este es el arreglo de dados (la base de la que salen los numeros finales)\n ${JSON.stringify(dice_arr)}`,
+     	`${dice_arr}`,
      	{reply_to_message_id:ctx.message.message_id}
      	)     
         .then((result) => { setTimeout(() => {
