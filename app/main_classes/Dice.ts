@@ -1,9 +1,12 @@
 import DiceRoller from "../helpers/DiceRoller";
+import {dice_roller_array} from "../helpers/CustomTypes";
+
 class Dice{
      msg: string;
      selector : string = "%";
-     dice_arr: any;
+     dice_arr?: [dice_roller_array] ;
     constructor(msg : string){
+        this.dice_arr = [{dice:[]}];
         this.msg = msg;
     }
 
@@ -11,9 +14,17 @@ class Dice{
         this.msg = this.msg.replace(this.selector,'')
         if(this.msg.includes("+")){
             var arr = this.msg.split('+');
-            arr.forEach(e => {
-                if(e.includes('d')){
-                    this.dice_arr?.push({dice:e.split('d')})
+            var bucle_start : boolean = true;
+            arr.forEach((e : string) => {
+                console.log("this");
+                console.log(this);
+                if(bucle_start === true){
+                    this.dice_arr![0]={dice:e.split('d')};
+                    bucle_start = false;
+                }else{
+                    if(e.includes('d')){
+                        this.dice_arr!.push({dice:e.split('d')})
+                    }
                 }
             });
         }else if(this.msg.includes('d')){

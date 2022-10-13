@@ -4,8 +4,6 @@ class DiceRoller{
     final_result_array!: final_roller_array ;
     constructor(dice_arr? : [dice_roller_array]){
         this.dice_arr = dice_arr;
-        console.log("this.dice_arr")
-        console.log(this.dice_arr)
     }
     roll_dice() : any{
         var limit_exceded : boolean  = false;
@@ -28,6 +26,8 @@ class DiceRoller{
                                 bad_dice_format = true;
                             }
                             do{
+                            console.log("temp_numb_1","temp_numb_2")
+                            console.log(dice_inner_arr,temp_numb_2)
                             if(temp_numb_1 <= 100 && temp_numb_2 <= 100)
                             {
                                 var dice_max : number = temp_numb_2 + 1;
@@ -54,8 +54,6 @@ class DiceRoller{
                             if(temp_numb_1 <= 100 && temp_numb_2 <= 100)
                             {
                             var dice_max : number = temp_numb_2 + 1;
-                            console.log("dice_inner_arr.dice[0]");
-                            console.log(final_result_array_temp);
                             var random_num = Math.floor((Math.random() * (dice_max-1)) +1)
                             var obj_to_dice: {[key: string]: number}={};
                             obj_to_dice[`d${dice_max-1}`] = random_num;
@@ -63,8 +61,6 @@ class DiceRoller{
                             final_result_array_temp.dice_ordered_by_type?.push( obj_to_dice);
                             final_result_array_temp.dice_for_final_sum?.push(random_num);
                             
-                            console.log("this.final_result_array?");
-                            console.log(this.final_result_array);
 
                             }else{
                                 limit_exceded=true;
@@ -76,8 +72,6 @@ class DiceRoller{
     
                 }
                 this.final_result_array = final_result_array_temp;
-                console.log("dice_inner_arr.dice[1]")
-                console.log(dice_inner_arr.dice[1])
             })
         }else{
             limit_exceded=true;
@@ -95,7 +89,6 @@ class DiceRoller{
     
     }
      give_answer_string() : any{
-        console.log(this.final_result_array);
         var total_str : string = "Resultado final:";
         var total_num : number= 0;
         var sub_str : string = "";
