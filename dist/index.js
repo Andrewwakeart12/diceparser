@@ -9,6 +9,15 @@ const Dice_1 = __importDefault(require("./main_classes/Dice"));
 const API_TOKEN = process.env.API_TOKEN || token;
 //const PORT = process.env.PORT || 3000;
 const bot = new telegraf_1.Telegraf(API_TOKEN);
+const express_1 = __importDefault(require("express"));
+const expressApp = (0, express_1.default)();
+const port = process.env.PORT || 3000;
+expressApp.get('/', (_req, res) => {
+    res.send('Hello World!');
+});
+expressApp.listen(port, () => {
+    console.log(`Listening on port ${port}`);
+});
 bot.hears(/^\%/, (ctx) => {
     console.log(ctx.message.text);
     var dice = new Dice_1.default(ctx.message.text);

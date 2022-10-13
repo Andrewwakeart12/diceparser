@@ -4,7 +4,16 @@ import Dice from './main_classes/Dice';
 const API_TOKEN = process.env.API_TOKEN || token;
 //const PORT = process.env.PORT || 3000;
 const bot = new Telegraf(API_TOKEN);
+import express from 'express';
+const expressApp = express();
 
+const port = process.env.PORT || 3000
+expressApp.get('/', (_req: any, res: { send: (arg0: string) => void; }) => {
+  res.send('Hello World!')
+})
+expressApp.listen(port, () => {
+  console.log(`Listening on port ${port}`)
+})
 
 
 
