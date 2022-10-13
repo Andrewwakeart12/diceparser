@@ -19,7 +19,6 @@ function roll_dice(dice_arr){
 	if(Array.isArray(dice_arr)){
 		if(dice_arr.length <= 8) {
 		dice_arr.forEach(dice_inner_arr =>{
-			console.log('dice_inner_arr')
 			if(!Array.isArray(dice_inner_arr))
 			{
 				if(dice_inner_arr.dice[0] != '')
@@ -57,8 +56,6 @@ function roll_dice(dice_arr){
 						if(dice_inner_arr.dice[0] <= 100 && dice_inner_arr.dice[1] <= 100)
 						{
 						var dice_max = dice_inner_arr.dice[1] + 1;
-						console.log("dice_inner_arr.dice[0]");
-						console.log(dice_inner_arr.dice[0]);
 						var random_num = Math.floor((Math.random() * (dice_max-1)) +1)
 						var obj_to_dice ={};
 						obj_to_dice[`d${dice_max-1}`] = random_num;
@@ -74,7 +71,6 @@ function roll_dice(dice_arr){
 				}
 
 			}
-			console.log(dice_inner_arr.dice[1])
 		})
 	}else{
 		limit_exceded=true;
@@ -108,7 +104,6 @@ function process_message_to_dice_arr(msg){
 	}else{
 		return null
 	}
-	console.log(dices)
 	return dices;
 }
 function give_answer_string(roll_dice_result){
@@ -125,7 +120,6 @@ function give_answer_string(roll_dice_result){
 			total_str += total_num;
 
 			let dice_ordered_by_type = roll_dice_result.dice_ordered_by_type.sort();
-			console.log(Object.keys(dice_ordered_by_type));
 			dice_ordered_by_type.forEach(dice_obj => {
 				Object.keys(dice_obj).forEach(key => {
 					sub_str += ` ${key} : (${dice_obj[key]})`;
@@ -137,12 +131,16 @@ function give_answer_string(roll_dice_result){
 	`;
 }
 bot.hears(/^\%/, (ctx,extra) => {
-	 console.log(ctx);
 	 let chatId = ctx.chat.id;
-
+	 console.log('step 1:\n');
 	 dice_arr = process_message_to_dice_arr(ctx.message.text);
+	 console.log(dice_arr);
+	 console.log('step 2:\n');
 	 dice_arr = roll_dice(dice_arr)
+	 console.log(dice_arr);
+	 console.log('step 3:\n');
 	 dice_arr = give_answer_string(dice_arr)
+	 console.log(dice_arr);
 	 //send gif:
 	 //ctx.replyWithDocument('https://educacion30.b-cdn.net/wp-content/uploads/2019/06/homer.gif');
      ctx.reply(
@@ -150,7 +148,6 @@ bot.hears(/^\%/, (ctx,extra) => {
      	{reply_to_message_id:ctx.message.message_id}
      	)     
         .then((result) => { setTimeout(() => {
-     		console.log("result")
      		//ctx.telegram.deleteMessage(result.chat.id, ctx.message.message_id).catch(e=>{
      		//	ctx.reply('El bot no puede eliminar mensajes de otros usuarios');
      		//})
