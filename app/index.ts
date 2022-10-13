@@ -3,7 +3,6 @@ import { Telegraf } from 'telegraf';
 import Dice from './main_classes/Dice';
 const API_TOKEN = process.env.API_TOKEN || token;
 //const PORT = process.env.PORT || 3000;
-const URL = process.env.URL || 'https://diceappparser.herokuapp.com/';
 const bot = new Telegraf(API_TOKEN);
 
 
