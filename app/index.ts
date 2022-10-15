@@ -26,15 +26,15 @@ bot.hears(/^\%/, (ctx) => {
         `${dice.execute_roll()}`,
         {reply_to_message_id:ctx.message.message_id}
         )     
-/*       .then((result) => { setTimeout(() => {
+       .then((result) => { setTimeout(() => {
             console.log("result")
             console.log(result)
             //ctx.telegram.deleteMessage(result.chat.id, ctx.message.message_id).catch(e=>{
             //	ctx.reply('El bot no puede eliminar mensajes de otros usuarios');
             //})
             //ctx.telegram.deleteMessage(result.chat.id, result.message_id)
-       }, 1000)})
-       .catch(err => console.log(err));*/
+       }, 300000)})
+       .catch(err => console.log(err));
 });
 bot.hears(/^\!/,async (ctx)=>{
   if(ctx.chat.type === 'group'){

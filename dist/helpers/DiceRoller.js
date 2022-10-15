@@ -3,8 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 class DiceRoller {
     constructor(dice_arr) {
         this.dice_arr = dice_arr;
-        console.log("this.dice_arr");
-        console.log(this.dice_arr);
     }
     roll_dice() {
         var limit_exceded = false;
@@ -49,15 +47,11 @@ class DiceRoller {
                                 temp_numb_2 = Math.abs(parseInt(dice_inner_arr.dice[1]));
                                 if (temp_numb_1 <= 100 && temp_numb_2 <= 100) {
                                     var dice_max = temp_numb_2 + 1;
-                                    console.log("dice_inner_arr.dice[0]");
-                                    console.log(final_result_array_temp);
                                     var random_num = Math.floor((Math.random() * (dice_max - 1)) + 1);
                                     var obj_to_dice = {};
                                     obj_to_dice[`d${dice_max - 1}`] = random_num;
                                     (_c = final_result_array_temp.dice_ordered_by_type) === null || _c === void 0 ? void 0 : _c.push(obj_to_dice);
                                     (_d = final_result_array_temp.dice_for_final_sum) === null || _d === void 0 ? void 0 : _d.push(random_num);
-                                    console.log("this.final_result_array?");
-                                    console.log(this.final_result_array);
                                 }
                                 else {
                                     limit_exceded = true;
@@ -69,8 +63,6 @@ class DiceRoller {
                         }
                     }
                     this.final_result_array = final_result_array_temp;
-                    console.log("dice_inner_arr.dice[1]");
-                    console.log(dice_inner_arr.dice[1]);
                 });
             }
             else {
@@ -89,7 +81,6 @@ class DiceRoller {
     }
     give_answer_string() {
         var _a, _b, _c, _d, _e, _f, _g, _h;
-        console.log(this.final_result_array);
         var total_str = "Resultado final:";
         var total_num = 0;
         var sub_str = "";

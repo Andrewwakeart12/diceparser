@@ -7,16 +7,23 @@ const DiceRoller_1 = __importDefault(require("../helpers/DiceRoller"));
 class Dice {
     constructor(msg) {
         this.selector = "%";
+        this.dice_arr = [{ dice: [] }];
         this.msg = msg;
     }
     process_message_to_dice_arr() {
         this.msg = this.msg.replace(this.selector, '');
         if (this.msg.includes("+")) {
             var arr = this.msg.split('+');
-            arr.forEach(e => {
-                var _a;
-                if (e.includes('d')) {
-                    (_a = this.dice_arr) === null || _a === void 0 ? void 0 : _a.push({ dice: e.split('d') });
+            var bucle_start = true;
+            arr.forEach((e) => {
+                if (bucle_start === true) {
+                    this.dice_arr[0] = { dice: e.split('d') };
+                    bucle_start = false;
+                }
+                else {
+                    if (e.includes('d')) {
+                        this.dice_arr.push({ dice: e.split('d') });
+                    }
                 }
             });
         }
