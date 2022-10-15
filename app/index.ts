@@ -48,17 +48,21 @@ bot.hears(/^\%/, (ctx) => {
        }, 300000)})
        .catch(err => console.log(err));
 });
-bot.hears(/^\!/,async (ctx)=>{
-  if(ctx.chat.type === 'group'){
+bot.hears(/^\!/, (ctx)=>{
+  console.log('alter comand')
+  if(ctx.chat.type === 'group' || ctx.chat.type === "supergroup"){
     var RC = new CheckCommand(ctx.message.text);
     RC.setChatId(String(ctx.chat.id));
-    var result = await RC.process_str();
-    if(!result.error)
-    {
-    ctx.reply(String(result.result));
-    }else{
-    ctx.reply(String(result.msg));
-    }
+    RC.process_str().then((result)=>{
+      if(!result.error)
+      {
+      console.log('Promise end')
+
+      ctx.reply(String(result.result));
+      }else{
+      ctx.reply(String(result.msg));
+      }
+    })
   }
 })
 bot.launch();

@@ -14,9 +14,11 @@ class CheckCommand{
          
     }
     async process_str() {
-                let regExp : RegExp = /rr/;
+                let helpExp : RegExp = /!h/;
+                let registerRExp : RegExp = /!rr/;
+                let getCampaingNameRExp : RegExp = /!gcn/;
                 
-                if(regExp.test(this.initialization_str)){
+            if(registerRExp.test(this.initialization_str)){
                     
                 this.initialization_str = this.initialization_str.replace(/!rr/,'')
                 var str_array : any[] = this.initialization_str.split(' ');
@@ -30,7 +32,15 @@ class CheckCommand{
                 str_array = str_array.filter(Boolean);
                 this.processed_array =  str_array;
 
-            }else{
+            }else if(getCampaingNameRExp.test(this.initialization_str)){
+                this.initialization_str = this.initialization_str.replace(/!gcn/,'')
+                return await this.getCampaingName();
+                var i = 0;
+            }
+            else if(helpExp.test(this.initialization_str)){
+                this.processed_array = [];
+            }
+            else{
                 this.processed_array = [];
             }
             return await this.registerGame();
@@ -57,8 +67,18 @@ class CheckCommand{
             var db : any = new DBManager();
             db = db.connection;
             var CI =await ChatIdentity.findOne({chat_id:this.chat_id}).exec();
-            console.log(CI);
-            
+            if(CI == null ){
+                var newCI = new ChatIdentity({
+                    chat_id:this.chat_id,
+                    campaing_name:this.final_str
+
+                });
+                newCI.save();
+                return {result:`${this.final_str} ha sido registrado existosamente`}
+            }else{
+                console.log('CI ITS NOT NULL');
+                return {result:`este grupo ya ha sido registrado con el nombre de "${CI.campaing_name}"`}
+            }
             return {result:this.final_str};
         }else{
             return {error:true, msg : 'Error al intentar ejecutar comando : falta de identificador de chat'}
@@ -66,6 +86,16 @@ class CheckCommand{
     }
     setChatId(chat_id : string){
         this.chat_id = chat_id;
+    }
+    async getCampaingName(){
+        var db : any = new DBManager();
+        db = db.connection;
+        var CI =await ChatIdentity.findOne({chat_id:this.chat_id}).exec();
+        if(CI != null){
+            return {result:`${CI.campaing_name}`}
+        }else{
+            return {result: `Esta Campaña aun no tiene nombre`}
+        }
     }
 }
 export default CheckCommand;
