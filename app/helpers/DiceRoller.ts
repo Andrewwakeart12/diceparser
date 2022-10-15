@@ -2,6 +2,7 @@ import {dice_roller_array,final_roller_array} from "./CustomTypes";
 class DiceRoller{
     dice_arr? : [dice_roller_array];
     final_result_array!: final_roller_array ;
+    optional_sum_param : number = 0;
     constructor(dice_arr? : [dice_roller_array]){
         this.dice_arr = dice_arr;
     }
@@ -87,7 +88,7 @@ class DiceRoller{
     
     }
      give_answer_string() : any{
-        var total_str : string = "Resultado final:";
+        var total_str : string = "Resultado final: ";
         var total_num : number= 0;
         var sub_str : string = "";
 
@@ -100,7 +101,9 @@ class DiceRoller{
                     total_num += e;
                 })
                 total_str += total_num;
-    
+                if(this.optional_sum_param != 0){
+                    total_str += ` + ${ this.optional_sum_param } = ${total_num + this.optional_sum_param}`;
+                }
                 let dice_ordered_by_type = this.final_result_array?.dice_ordered_by_type.sort();
                 dice_ordered_by_type.forEach(dice_obj => {
                     Object.keys(dice_obj).forEach(key => {

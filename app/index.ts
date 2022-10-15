@@ -1,3 +1,5 @@
+//test key : 5503208387:AAGqH8-2nsDD7KkdrUcZIN02BcVf1V87mqE
+//original key : 5283041337:AAHrdImV57t298ZoZuEZii1jWGcqMIFPzKM
 const token = '5283041337:AAHrdImV57t298ZoZuEZii1jWGcqMIFPzKM';
 import { Telegraf } from 'telegraf';
 import Dice from './main_classes/Dice';
@@ -29,10 +31,12 @@ bot.hears(/^\%/, (ctx) => {
        .then((result) => { setTimeout(() => {
             console.log("result")
             console.log(result)
-            //ctx.telegram.deleteMessage(result.chat.id, ctx.message.message_id).catch(e=>{
-            //	ctx.reply('El bot no puede eliminar mensajes de otros usuarios');
-            //})
-            //ctx.telegram.deleteMessage(result.chat.id, result.message_id)
+            ctx.telegram.deleteMessage(result.chat.id, ctx.message.message_id).catch(()=>{
+            	ctx.reply('El bot no puede eliminar mensajes de otros usuarios');
+            })
+            ctx.telegram.deleteMessage(result.chat.id, result.message_id).catch(()=>{
+            	ctx.reply('El bot no puede eliminar mensajes de otros usuarios');
+            })
        }, 300000)})
        .catch(err => console.log(err));
 });

@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 class DiceRoller {
     constructor(dice_arr) {
+        this.optional_sum_param = 0;
         this.dice_arr = dice_arr;
     }
     roll_dice() {
@@ -81,7 +82,7 @@ class DiceRoller {
     }
     give_answer_string() {
         var _a, _b, _c, _d, _e, _f, _g, _h;
-        var total_str = "Resultado final:";
+        var total_str = "Resultado final: ";
         var total_num = 0;
         var sub_str = "";
         if ((_a = this.final_result_array) === null || _a === void 0 ? void 0 : _a.hasOwnProperty('error')) {
@@ -93,6 +94,9 @@ class DiceRoller {
                     total_num += e;
                 });
                 total_str += total_num;
+                if (this.optional_sum_param != 0) {
+                    total_str += ` + ${this.optional_sum_param} = ${total_num + this.optional_sum_param}`;
+                }
                 let dice_ordered_by_type = (_h = this.final_result_array) === null || _h === void 0 ? void 0 : _h.dice_ordered_by_type.sort();
                 dice_ordered_by_type.forEach(dice_obj => {
                     Object.keys(dice_obj).forEach(key => {

@@ -5,6 +5,7 @@ class Dice{
      msg: string;
      selector : string = "%";
      dice_arr?: [dice_roller_array] ;
+     check_sum : number = 0;
     constructor(msg : string){
         this.dice_arr = [{dice:[]}];
         this.msg = msg;
@@ -22,6 +23,11 @@ class Dice{
                 }else{
                     if(e.includes('d')){
                         this.dice_arr!.push({dice:e.split('d')})
+                    }else{
+                        if(Number(e) != NaN){
+                            this.check_sum += Number(e);
+                        }
+                        console.log(this.check_sum)
                     }
                 }
             });
@@ -35,7 +41,9 @@ class Dice{
     execute_roll() : string{
         this.process_message_to_dice_arr() ;
         let roller = new DiceRoller(this.dice_arr);
+        roller.optional_sum_param = this.check_sum;
         roller.roll_dice();
+        
         return roller.give_answer_string();
     }
 }

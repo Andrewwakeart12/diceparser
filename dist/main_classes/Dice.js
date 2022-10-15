@@ -7,6 +7,7 @@ const DiceRoller_1 = __importDefault(require("../helpers/DiceRoller"));
 class Dice {
     constructor(msg) {
         this.selector = "%";
+        this.check_sum = 0;
         this.dice_arr = [{ dice: [] }];
         this.msg = msg;
     }
@@ -24,6 +25,12 @@ class Dice {
                     if (e.includes('d')) {
                         this.dice_arr.push({ dice: e.split('d') });
                     }
+                    else {
+                        if (Number(e) != NaN) {
+                            this.check_sum += Number(e);
+                        }
+                        console.log(this.check_sum);
+                    }
                 }
             });
         }
@@ -37,6 +44,7 @@ class Dice {
     execute_roll() {
         this.process_message_to_dice_arr();
         let roller = new DiceRoller_1.default(this.dice_arr);
+        roller.optional_sum_param = this.check_sum;
         roller.roll_dice();
         return roller.give_answer_string();
     }
