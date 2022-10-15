@@ -1,9 +1,17 @@
 //test key : 5503208387:AAGqH8-2nsDD7KkdrUcZIN02BcVf1V87mqE
 //original key : 5283041337:AAHrdImV57t298ZoZuEZii1jWGcqMIFPzKM
-const token = '5283041337:AAHrdImV57t298ZoZuEZii1jWGcqMIFPzKM';
+import dotenv from "dotenv"
+
+dotenv.config();
+declare var process : {
+    env: {
+      TELEGRA_BOT_ENV: string
+      PORT: any
+    }
+  }
 import { Telegraf } from 'telegraf';
 import Dice from './main_classes/Dice';
-const API_TOKEN = process.env.API_TOKEN || token;
+const API_TOKEN = process.env.TELEGRA_BOT_ENV || "5503208387:AAGqH8-2nsDD7KkdrUcZIN02BcVf1V87mqE";
 //const PORT = process.env.PORT || 3000;
 const bot = new Telegraf(API_TOKEN);
 import express from 'express';
