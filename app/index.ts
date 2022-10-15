@@ -5,6 +5,7 @@ const API_TOKEN = process.env.API_TOKEN || token;
 //const PORT = process.env.PORT || 3000;
 const bot = new Telegraf(API_TOKEN);
 import express from 'express';
+import CheckCommand from './helpers/CheckCommand';
 const expressApp = express();
 
 const port = process.env.PORT || 3000
@@ -18,7 +19,6 @@ expressApp.listen(port, () => {
 
 
 bot.hears(/^\%/, (ctx) => {
-    console.log(ctx.message.text);
     var dice = new Dice(ctx.message.text);
     //send gif:
     //ctx.replyWithDocument('https://educacion30.b-cdn.net/wp-content/uploads/2019/06/homer.gif');
@@ -36,5 +36,17 @@ bot.hears(/^\%/, (ctx) => {
        }, 1000)})
        .catch(err => console.log(err));*/
 });
-
+bot.hears(/^\!/,async (ctx)=>{
+  if(ctx.chat.type === 'group'){
+    var RC = new CheckCommand(ctx.message.text);
+    RC.setChatId(String(ctx.chat.id));
+    var result = await RC.process_str();
+    if(!result.error)
+    {
+    ctx.reply(String(result.result));
+    }else{
+    ctx.reply(String(result.msg));
+    }
+  }
+})
 bot.launch();

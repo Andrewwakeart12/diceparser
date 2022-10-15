@@ -26,8 +26,6 @@ class DiceRoller{
                                 bad_dice_format = true;
                             }
                             do{
-                            console.log("temp_numb_1","temp_numb_2")
-                            console.log(dice_inner_arr,temp_numb_2)
                             if(temp_numb_1 <= 100 && temp_numb_2 <= 100)
                             {
                                 var dice_max : number = temp_numb_2 + 1;

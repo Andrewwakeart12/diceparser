@@ -16,8 +16,6 @@ class Dice{
             var arr = this.msg.split('+');
             var bucle_start : boolean = true;
             arr.forEach((e : string) => {
-                console.log("this");
-                console.log(this);
                 if(bucle_start === true){
                     this.dice_arr![0]={dice:e.split('d')};
                     bucle_start = false;
