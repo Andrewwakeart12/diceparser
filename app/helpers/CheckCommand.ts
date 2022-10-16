@@ -16,6 +16,8 @@ class CheckCommand{
     async process_str() {
                 let helpExp : RegExp = /!h/;
                 let registerRExp : RegExp = /!rr/;
+                let registerCharRExp : RegExp = /!rc/;
+                let registerCurrencyRExp : RegExp = /!gcn/;
                 let getCampaingNameRExp : RegExp = /!gcn/;
                 
             if(registerRExp.test(this.initialization_str)){
@@ -37,8 +39,15 @@ class CheckCommand{
                 return await this.getCampaingName();
                 var i = 0;
             }
+            else if(registerCharRExp.test(this.initialization_str)){
+
+            }
+
+            else if(registerCurrencyRExp.test(this.initialization_str)){
+
+            }
             else if(helpExp.test(this.initialization_str)){
-                this.processed_array = [];
+                return {result : `Los comandos del bot son los siguientes(lo que esta en parentesis es opcional):\n 1) %{cantidad de dados}{d}{caras del dado}+{numero}{cantidad de dados}{d}{caras del dado}+(bonificador)\n2)!rr {nombre de la campaña} `}                
             }
             else{
                 this.processed_array = [];
@@ -79,6 +88,7 @@ class CheckCommand{
                 console.log('CI ITS NOT NULL');
                 return {result:`este grupo ya ha sido registrado con el nombre de "${CI.campaing_name}"`}
             }
+            
             return {result:this.final_str};
         }else{
             return {error:true, msg : 'Error al intentar ejecutar comando : falta de identificador de chat'}

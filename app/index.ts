@@ -53,7 +53,7 @@ bot.hears(/^\!/, (ctx)=>{
   if(ctx.chat.type === 'group' || ctx.chat.type === "supergroup"){
     var RC = new CheckCommand(ctx.message.text);
     RC.setChatId(String(ctx.chat.id));
-    RC.process_str().then((result)=>{
+    RC.process_str().then((result : any)=>{
       if(!result.error)
       {
       console.log('Promise end')

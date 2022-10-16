@@ -11,7 +11,7 @@ class DiceRoller{
         var bad_dice_format : boolean = false;
         let final_result_array_temp: final_roller_array = {dice_ordered_by_type:[],dice_for_final_sum:[]};
         if(Array.isArray(this.dice_arr)){
-            if(this.dice_arr.length <= 8) {
+            if(this.dice_arr.length <= 8) { 
                 this.dice_arr.forEach((dice_inner_arr : dice_roller_array) =>{
                 if(!Array.isArray(dice_inner_arr))
                 {
